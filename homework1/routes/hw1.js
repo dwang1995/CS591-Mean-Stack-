@@ -17,13 +17,8 @@ router.get('/:name', function(req,res,next){
     res.send({'string' : parName, 'length' : thelength})
 })
 
-router.post('/', function (req, res, next) {
-    res.json(req.body.test)
-    //res.send("hello")
-})
-
 /**
-router.post('/:name',function(req,res,next){
+ router.post('/:name',function(req,res,next){
     console.log(req.body.short)
     let parName = req.params.name
     let thelength = req.query.breed
@@ -31,5 +26,12 @@ router.post('/:name',function(req,res,next){
     //res.send("hello")
 
 })*/
+
+router.post('/', function (req, res, next) {
+    res.json(req.body.test)
+    //res.send("hello")
+})
+
+
 
 module.exports = router;
