@@ -13,8 +13,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/:name', function(req,res,next){
     let parName = req.params.name
-    let thelength = req.query.length
-    res.send({'string' : parName, 'length' : thelength})
+    //let thelength = req.query.length
+    res.send({'string' : parName, 'length' : parName.length})
 })
 
 /**
@@ -28,8 +28,7 @@ router.get('/:name', function(req,res,next){
 })*/
 
 router.post('/', function (req, res, next) {
-    res.json(req.body.test)
-    //res.send("hello")
+    res.send({'string':req.body, 'length':req.body.length})
 })
 
 
