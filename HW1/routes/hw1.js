@@ -28,8 +28,9 @@ router.get('/:name', function(req,res,next){
 })*/
 
 router.post('/', function (req, res, next) {
-    res.send({'string':req.body, 'length':req.body.length})
-})
+    console.log(req.body)
+    res.send({"string": req.body, "length" : req.body.length})
+});
 
 
 
