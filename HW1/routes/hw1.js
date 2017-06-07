@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+// http://localhost:3000/hw1/short
 router.get('/:name', function(req,res,next){
     let parName = req.params.name
     //let thelength = req.query.length
