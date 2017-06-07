@@ -29,7 +29,7 @@ router.get('/:name', function(req,res,next){
 
 router.post('/', function (req, res, next) {
     console.log(req.body)
-    res.send({"string": req.body, "length" : req.body.length})
+    res.send({"string": req.body.test1, "length" : req.body.test1.length})
 });
 
 
