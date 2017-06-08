@@ -2,6 +2,9 @@
  * Created by wangdayuan on 6/8/17.
  */
 
+/*
+From now I am going to make connection to my mongoDB database
+*/
 const express = require('express')
 const router = express.Router()
 
@@ -12,6 +15,12 @@ const db = mongoose.connection
 db.once('open', function(){
     console.log('Connection successful.')
 })
+//Finished set up the connection
+
+
+/*
+Now I am going to set up the Schema for the data
+ */
 const Schema = mongoose.Schema
 const stringSchema = new Schema({
     string: String,
@@ -19,6 +28,8 @@ const stringSchema = new Schema({
 })
 
 const string = mongoose.model('string', stringSchema)
+//Finished Schema part
+
 
 //This is the helper function to use database find things
 const find = function find_1(s){
@@ -27,6 +38,11 @@ const find = function find_1(s){
     })
 }
 
+/*
+Now I am going to write all the get methods
+ */
+
+//This is the function to find all of the data in the database
 router.get('/', function(req, res, next){
     string.find({}, function(err, results){
         res.send(results);
@@ -34,6 +50,9 @@ router.get('/', function(req, res, next){
 })
 
 /*
+//This method will take one paramiter. If it is in the database, just return the
+//record in the database
+//If the paramiter is not in the database, add it to the database.
 //This is the function uses helper function
 router.get('/:name', function(req, res, next){
     let s = req.params.name
@@ -54,6 +73,9 @@ router.get('/:name', function(req, res, next){
 })
 */
 
+//This method will take one paramiter. If it is in the database, just return the
+//record in the database
+//If the paramiter is not in the database, add it to the database.
 //This is the function does not use the helper function
 router.get('/:name', function(req, res, next){
     let s = req.params.name
@@ -73,7 +95,17 @@ router.get('/:name', function(req, res, next){
     })
 })
 
+//ends all the function for get
+
 /*
+Now I am going to write all the functions for post.
+ */
+
+/*
+ //This method will take one paramiter. If it is in the database, just return the
+ //record in the database
+ //If the paramiter is not in the database, add it to the database.
+ //If user does not have a input, send a message to tell them
 //This is the function uses helper function
 router.post('/', function(req, res, next){
     let s = req.body.input
@@ -100,6 +132,10 @@ router.post('/', function(req, res, next){
 })
 */
 
+//This method will take one paramiter. If it is in the database, just return the
+//record in the database
+//If the paramiter is not in the database, add it to the database.
+//If user does not have a input, send a message to tell them
 //This is the function does not use the helper function
 router.post('/', function(req, res, next){
     let s = req.body.input
@@ -112,7 +148,7 @@ router.post('/', function(req, res, next){
     console.log(s)
     string.find({string: s}, function(err, results){
         if(results == {}){
-            const aString = new string({string: s, length:s.length})
+            const aString = new string({string : s, length : s.length})
             aString.save(function(err){
                 if(err){res.send(err)}
                 else{res.send(aString)}
@@ -125,7 +161,19 @@ router.post('/', function(req, res, next){
     })
 })
 
+
+//ends all the function for get
+
+
+//Now I am going to write all the request for delete
+
 /*
+//This function will take a paramiter.
+//It will go to database to try to find it
+//If you cannot find it in the database
+//send a message to front end.
+//if it is in the database,
+//remove it from database.
 //This is the function use the helper function
 router.delete('/:name', function(req, res, next){
     let s = req.params.name
@@ -142,6 +190,12 @@ router.delete('/:name', function(req, res, next){
 })
 */
 
+//This function will take a paramiter.
+//It will go to database to try to find it
+//If you cannot find it in the database
+//send a message to front end.
+//if it is in the database,
+//remove it from database.
 //This is the function does not use the helper function
 router.delete('/:name', function(req, res, next){
     let s = req.params.name
@@ -157,5 +211,8 @@ router.delete('/:name', function(req, res, next){
         }
     })
 })
+
+
+//Ends for all the functions in delete
 
 module.exports = router;
