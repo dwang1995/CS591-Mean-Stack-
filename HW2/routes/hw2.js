@@ -63,9 +63,10 @@ router.post('/',function(req, res, next){
     if(s == null){
         res.send({'message':'you did not enter a string'})
     }
-    if(s.length == 0){
+    else if(s.length == 0){
         res.send({'message':'you did not enter a string'})
     }
+    else{
     let s_len = s.length
     findByName(s)
         .then(function(status){
@@ -78,7 +79,7 @@ router.post('/',function(req, res, next){
                 if(err) {res.send(err)}
                 else{res.send(aString)}
             })
-        })
+        })}
 })
 
 
@@ -88,7 +89,7 @@ router.delete('/:name',function(req, res, next){
         .then(function(status){
             string.remove( {string : s}, function(err, result){
                 if(err){res.jason({'message':'Error deleting'});}
-                else{res.json({'message':'Success'});}
+                else{res.json({'message':'Delete Successful'});}
             } )
         })
         .catch(function(status){
