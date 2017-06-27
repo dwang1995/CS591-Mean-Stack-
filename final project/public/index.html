@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Latest compiled and minified jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.3.js"
+            integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <!-- Angular (minified) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-cookies.js"></script>
+
+
+    <!--Controllers for this page/app -->
+    <script src="javascripts/controllers.js"></script>
+    <!-- Local styles -->
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="background.css">
+
+</head>
+
+<body ng-app="cs411">
+<div ng-controller="cs411ctrl" ng-init="initApp()">
+    <img src="/images/logo_1.png"><span class="largeText">  <span id="title"><a href="http://www.meetyourwaifu.com">Meet Your Waifu</a></span> </span>
+    <h2>{{h2message}} {{name}}</h2>
+    <div>
+        <form class="form-inline" name="inputForm">
+            <div class="form-group">
+                <label class="sr-only" for="formnickName">NickName</label>
+                <input type="text" class="form-control" id="formNickName" placeholder="Enter Nick Name(Your Nick Name)" ng-model="NickName" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="formFullName">FullName</label>
+                <input type="text" class="form-control" id="formFullName" placeholder="Enter Full Name(of the character)" ng-model="FullName" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="formAnimation">Animation</label>
+                <input type="text" class="form-control" id="formAnimation" placeholder="Enter Animation you like"
+                       ng-model="Animation" required>
+                <input type="hidden" value="{{user._id}}">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="inputForm.$invalid" ng-click="createUser()">
+                {{buttonMessage}}
+            </button>
+        </form>
+        <br/>
+        <div ng-hide="authorized">
+            <br/>
+            <button type="submit" class="btn btn-primary" ng-click="doTwitterAuth()">Log in with Twitter</button>
+        </div>
+        <div ng-show="showLogin">
+            Name: <input type="text" ng-model="name">
+            Username: <input type="text" ng-model="username">
+            Password: <input type="password" ng-model="password">
+            <button class="btn btm-sm" ng-click="login()">Log in</button>
+            <button class="btn btm-sm" ng-click="register()">Register</button>
+
+        </div>
+        <br/>
+        <div ng-show="authorized">
+            <button class="btn btn-sm" ng-click="logout()">Log out</button>
+        </div>
+    </div>
+    <!--Here is the place to do the things-->
+    <div class="col-xs-12" style="height:30px;"></div>
+    <div class="well col-md-6">
+        <ul class="list-group">
+            <li ng-controller="listController" class="list-group-item largeText" ng-repeat="user in users">{{user.NickName}}
+                <span ng-show="display"> <p>I love {{user.FullName}} forever!(我永远喜欢{{user.FullName}})</p> <p>The Animation loves the most is: {{user.Animation}}</p></span>
+                <!--Here is the button to delete the user information-->
+                <button title="Delete User" class="btn btn-sm pull-right btn-danger" ng-click="deleteUser(user._id);">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <!--Here is the button to see user information's detail-->
+                <button title="Show User Information" class="btn btn-sm pull-right btn-info" ng-click="showInfo(user._id);">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                <!--Here is the button to update user information-->
+                <button title="Update User Information" class="btn btn-sm pull-right btn-warning" ng-click="setUserUpdate(user);">
+                    <span class="glyphicon glyphicon-hand-up"></span>
+                </button>
+                <!--Here is the button to call the API-->
+                <!--This will use the search key to find the description of of the image associate with google-->
+                <button title="Use the search key to get the description of the image associate with google" class="btn btn-sm pull-right btn-info" ng-click="getGoogle_1(user.Animation);">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </button>
+                <!--Here is button to call the API-->
+                <!--This will use the search key to find the youtube video-->
+                <button title="find the youtube" class="btn btn-sm pull-right btn-info" ng-click="youtube(user.Animation);">
+                    <span class="glyphicon glyphicon-film"></span>
+                </button>
+                <!--Here is the code to do image searching, it will return the url of the first 10 image-->
+                <!--The search key will be the key word that user want to search-->
+                <button title="Use the search key to get first 10 image from google image" class="btn btn-sm pull-right btn-info" ng-click="getGoogle(user.Animation);">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </button>
+                <!-- Here is the code to find the twitter tweets based on the search key -->
+                <!-- It will return the twitter -->
+                <button title="Use the search key to get the twitter" class="btn btn-sm pull-right btn-info" ng-click="getTwitter(user.Animation);">
+                    <span class="glyphicon glyphicon-send"></span>
+                </button>
+                <!--Here is the code to combine two APIs-->
+                <!--Based on the search key,it will find twitter's location, and then use google to find the image of the location-->
+                <button title="find the twitter location, then find the image of that location" class="btn btn-sm pull-right btn-info" ng-click="comb(user.Animation, user.FullName, user.NickName);">
+                    <span class="glyphicon glyphicon-globe"></span>
+                </button>
+                <!--THis code will combine two API calls-->
+                <!--Based on the tweets create time, find the image based on that-->
+                <button title="Based on the tweets create time, find the image based on that" class="btn btn-sm pull-right btn-info" ng-click="comb_3(user.Animation);">
+                    <span class="glyphicon glyphicon-globe"></span>
+                </button>
+                <!--This code will combine two API calls-->
+                <!--It will find the description of the image first, then use the description to find the image-->
+                <button title="find the description first, then use the google image to find the image" class="btn btn-sm pull-right btn-info" ng-click="comb_1(user.Animation);">
+                    <span class="glyphicon glyphicon-globe"></span>
+                </button>
+                <!--This code will combine two API calls-->
+                <!--It will find the description of the image first, then use the description to find the tweets-->
+                <button title="find the description first, then use it as the keyword to find the twitter" class="btn btn-sm pull-right btn-info" ng-click="comb_2(user.Animation);">
+                    <span class="glyphicon glyphicon-globe"></span>
+                </button>
+
+            </li>
+        </ul>
+
+        <!--This is the place to show the result from twitter API call-->
+        <p ng-hide="twitter_hide">Here are the twits from twitter:</p>
+        <ul ng-hide="twitter_hide">
+            <li ng-repeat="result in APIresult">{{result.text}}</li>
+        </ul>
+
+        <!--This is the place to show the result from google API-->
+        <!--It will show all the URL from the search result-->
+        <p ng-hide="google_image_hide">Here are the links from Google Image:</p>
+        <ul ng-hide="google_image_hide">
+            <li ng-repeat="result in APIresult"><a href="{{result.thumb_url}}">{{result.thumb_url}}</a></li>
+        </ul>
+
+        <!--This is the place to show the result from another google API-->
+        <!--This will show the description of the image associate with google-->
+        <p ng-hide = "google_image_old">Here is the image descriptions from google:</p>
+        <ul ng-hide="google_image_old">
+            <li ng-repeat="result in APIresult">{{result.description}}</li>
+        </ul>
+
+        <p ng-hide = "youtube_hide">Here are the link from youtube:</p>
+        <ul ng-hide="youtube_hide">
+            <li ng-repeat="result in APIresult"><a href="{{result.link}}">{{result.link}}</a></li>
+        </ul>
+
+    </div>
+
+</div>
+</body>
+</html>
