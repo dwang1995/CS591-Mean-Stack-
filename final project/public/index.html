@@ -23,6 +23,8 @@
     <script src="javascripts/controllers.js"></script>
     <!-- Local styles -->
     <link rel="stylesheet" href="stylesheets/style.css">
+
+    <!--Add another css file(try to change the UI a little bit)-->
     <link rel="stylesheet" href="background.css">
 
 </head>
@@ -151,6 +153,8 @@
             <li ng-repeat="result in APIresult">{{result.description}}</li>
         </ul>
 
+        <!--This is the place to show the result from youtube API-->
+        <!--This will show the link to the youtube page-->
         <p ng-hide = "youtube_hide">Here are the link from youtube:</p>
         <ul ng-hide="youtube_hide">
             <li ng-repeat="result in APIresult"><a href="{{result.link}}">{{result.link}}</a></li>

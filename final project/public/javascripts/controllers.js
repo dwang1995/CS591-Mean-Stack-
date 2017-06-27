@@ -199,7 +199,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
         }
 
         // Use the key to find the image associated with google
-        // then use the description to find the twitt
+        // then use the description to find the tweet
         $scope.comb_2 = function(input){
             $http.get('http://localhost:3000/google/' + input)
                 .then(function(response){
